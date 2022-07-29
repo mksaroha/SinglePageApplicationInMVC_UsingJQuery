@@ -4,6 +4,8 @@
     ViewBag.Title = "Index";
 }
 
+<br />
+  
 
 <div class="container">
     <div style="float:left;width:40%">
@@ -12,22 +14,22 @@
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-                <h4>Registration Form</h4>
+                <h4><u>Registration Form</u></h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.FullName, "Please Enter Name", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                        @Html.ValidationMessageFor(model => model.Password, "Please Enter Password", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
 
@@ -35,7 +37,7 @@
                     @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.Email, "Please Enter Email", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
 
@@ -43,7 +45,7 @@
                     @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.Telephone, "Please Enter Telephone", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
 
@@ -51,7 +53,7 @@
                     @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.Address, "Please Enter Address", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
 
@@ -65,7 +67,7 @@
                         <label class="radio-inline">
                             @Html.RadioButtonFor(model => model.Gender, "Female", new { @name = "gender" })
                             Female
-                            @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.Gender, "Please Select Gender", new { @class = "text-danger", style = "display:none" })
                         </label>
                     </div>
                 </div>
@@ -75,7 +77,7 @@
                     <div class="col-md-10">
                         <div class="checkbox">
                             @Html.EditorFor(model => model.IsActive)
-                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.IsActive, "Please Check IsActive ", new { @class = "text-danger", style = "display:none" })
                         </div>
                     </div>
                 </div>
@@ -83,14 +85,17 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("CountryId", new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), null, htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                        @Html.DropDownList("CountryId", new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), "Select Country", htmlAttributes: new { @class = "form-control" })
+                        @*<select id="ddlcountry" class="form-control"><option value="0">Select Country</option></select>*@                        
+                        @Html.ValidationMessageFor(model => model.CountryId, "Please Select Country", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="button" id="btnsave" value="Save" class="btn btn-success" onclick="SaveData()" />
+                        @*<button type="submit" id="btnsave" class="btn btn-info" >Save</button>*@
+                        <input type="submit" value="Save" class="btn btn-success" onclick="SaveData(); return false"/>
+                        <input type="reset" value="Reset" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
@@ -120,14 +125,11 @@
 </div>
 
 
-
-
-
-
-
-
-
-
+<style>
+    table, td, th {
+        text-align: center;
+    }
+</style>
 
 
 
@@ -158,17 +160,35 @@
           }
 
           function SaveData() {
-              $.ajax({
-                  url: '/Employee/AddEmployee',
-                  method: 'POST',
-                  data: { Id:KKK,FullName: $("#FullName").val(), Email: $("#Email").val(),Password:$('#Password').val(), Telephone: $("#Telephone").val(), Address: $("#Address").val(), CountryId: $("#CountryId").val(), Gender: $("input[name='Gender']:checked").val(),IsActive:$("input[name='IsActive']:checked").val()},
-          success: function (data) {
-              alert('Data Save/Update Successfully');
-              BindData();
-          },
-          error: function () { }
-          });
+              if (ValidateUser() == true) {
+                  $.ajax({
+                      url: '/Employee/AddEmployee',
+                      method: 'POST',
+                      data: { Id: KKK, FullName: $("#FullName").val(), Email: $("#Email").val(), Password: $('#Password').val(), Telephone: $("#Telephone").val(), Address: $("#Address").val(), CountryId: $("#CountryId").val(), Gender: $("input[name='Gender']:checked").val(), IsActive: $("input[name='IsActive']:checked").val() },
+                      success: function (data) {
+                          alert('Data Save/Update Successfully');
+                          BindData();
+                      },
+                      error: function () { }
+                  });
+              }
           }
+
+          //$("#btbsave").click(function () {
+          //    if (ValidateUser() == true) {
+          //        $.ajax({
+          //            url: '/Employee/AddEmployee',
+          //            method: 'POST',
+          //            data: { Id: KKK, FullName: $("#FullName").val(), Email: $("#Email").val(), Password: $('#Password').val(), Telephone: $("#Telephone").val(), Address: $("#Address").val(), CountryId: $("#CountryId").val(), Gender: $("input[name='Gender']:checked").val(), IsActive: $("input[name='IsActive']:checked").val() },
+          //            success: function (data) {
+          //                alert('Data Save/Update Successfully');
+          //                BindData();
+          //            },
+          //            error: function () { }
+          //        });
+          //    }
+          //})
+          
 
           function BindCoountry() {
               $.ajax({
@@ -199,6 +219,8 @@
                       $("#Address").val(p[0].Address)
                       $("#CountryId option:selected").val(p[0].CountryId);
                       $("#CountryId option:selected").text(p[0].CountryName);
+                      //$("#ddlcountry option:selected").val(p[0].CountryId);
+                      //$("#ddlcountry option:selected").text(p[0].CountryName);
                       $("input[name=Gender][value=" + p[0].Gender + "]").prop('checked', true);
                       if (p[0].IsActive == true){
                           $("#IsActive").prop("checked", true);
@@ -229,6 +251,51 @@
                   });
               }
               return false;
+          }
+
+          function ValidateUser() {
+              event = event || window.event || event.srcElement;
+              var return_val = true;
+              if ($("#FullName").val().trim() == '') {
+                  $("#FullName").next('span').show();
+                  return_val = false;
+              } else {
+                  $("#FullName").next('span').hide();
+              }
+              if ($("#Email").val().trim() == '') {
+                  $("#Email").next('span').show();
+                  return_val = false;
+              } else {
+                  $("#Email").next('span').hide();
+              }
+              if ($("#Password").val().trim() == '') {
+                  $("#Password").next('span').show();
+                  return_val = false;
+              } else {
+                  $("#Password").next('span').hide();
+              }
+              if ($("#Telephone").val().trim() == '') {
+                  $("#Telephone").next('span').show();
+                  return_val = false;
+              } else {
+                  $("#Telephone").next('span').hide();
+              }
+              if ($("#Address").val().trim() == '') {
+                  $("#Address").next('span').show();
+                  return_val = false;
+              } else {
+                  $("#Address").next('span').hide();
+              }
+              if ($("#Gender").val().trim() == '') {
+                  $("#Gender").next('span').show();
+                  return_val = false;
+              } else {
+                  $("#Gender").next('span').hide();
+              }
+              return return_val;
+              //if (!return_val) {
+              //    event.preventDefault();
+              //}
           }
 </script>
 }

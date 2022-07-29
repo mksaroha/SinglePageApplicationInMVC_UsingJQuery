@@ -13,7 +13,7 @@ namespace SinglePageApplicationInMVC_UsingJQuery.Controllers
         AppContext _context = new AppContext(); 
         // GET: Employee
         public ActionResult Index()
-        {
+        {            
             ViewBag.CountryList = _context.Countries.ToList();
             return View();
         }
@@ -27,19 +27,33 @@ namespace SinglePageApplicationInMVC_UsingJQuery.Controllers
             return Json(employees, JsonRequestBehavior.AllowGet);
         }
 
+        //public JsonResult GetCountry()
+        //{
+        //    var country = _context.Countries.ToList();
+        //    return Json(country, JsonRequestBehavior.AllowGet);
+        //}
+
         [HttpPost]
         public ActionResult AddEmployee(Employee employee)
-        {
-            if (employee.Id == 0)
+        {            
+            if (ModelState.IsValid)
             {
-                _context.Employees.Add(employee);
-            }
+                if (employee.Id == 0)
+                {
+                    _context.Employees.Add(employee);
+                }
+                else
+                {
+                    _context.Entry(employee).State = EntityState.Modified;
+                }
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }           
             else
             {
-                _context.Entry(employee).State = EntityState.Modified;
-            }
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+                ViewBag.CountryList = _context.Countries.ToList();
+                return View("Index");
+            }             
         }
 
         public ActionResult Edit(int id)

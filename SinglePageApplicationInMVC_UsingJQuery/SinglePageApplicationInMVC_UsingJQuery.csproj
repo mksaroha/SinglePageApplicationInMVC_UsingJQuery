@@ -137,6 +137,10 @@
     <Compile Include="Migrations\202207281359326_init.Designer.cs">
       <DependentUpon>202207281359326_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202207291850547_AddAnnotatioin.cs" />
+    <Compile Include="Migrations\202207291850547_AddAnnotatioin.Designer.cs">
+      <DependentUpon>202207291850547_AddAnnotatioin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppContext.cs" />
     <Compile Include="Models\Country.cs" />
@@ -150,6 +154,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -194,6 +199,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202207281359326_init.resx">
       <DependentUpon>202207281359326_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207291850547_AddAnnotatioin.resx">
+      <DependentUpon>202207291850547_AddAnnotatioin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

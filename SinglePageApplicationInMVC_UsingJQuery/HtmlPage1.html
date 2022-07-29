@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    @model RegistrationForm.Models.Employee
+    @{
+    ViewBag.Title = "Index";
+    }
+
+    <h2 style="text-align:center"><u>Registration Form</u></h2>
+    <br />
+
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            <div class="form-group">
+                @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <label class="radio-inline">
+                        @Html.RadioButtonFor(model => model.Gender, "Male", new { @name = "gender" })
+                        Male
+                    </label>
+                    <label class="radio-inline">
+                        @Html.RadioButtonFor(model => model.Gender, "Female", new { @name = "gender" })
+                        Female
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CountryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CountryId", new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" id="btnsave" value="Save" class="btn btn-success" onclick="SaveData()" />
+                </div>
+            </div>
+        </div>
+        }
+
+
+        <br />
+        <br />
+
+
+        <table id="employees" class="table table-bordered table-striped table-condensed" style="text-align:center">
+            <tr>
+                @*
+                <td>Id</td>*@
+                <th>FullName</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Telephone</th>
+                <th>Address</th>
+                <th>Gender</th>
+                <th>Country</th>
+                <th colspan="2">Action</th>
+            </tr>
+            <tbody></tbody>
+        </table>
+
+    </div>
+
+
+    @section scripts{
+
+    <script>
+
+        $(document).ready(function () {
+            BindCoountry();
+            BindData();
+        });
+
+        function BindData() {
+            $.ajax({
+                url: '/Employee/GetEmployees',
+                type: 'GET',
+                success: function (p) {
+                    $("#employees").find("tr:gt(0)").remove();
+                    for (var i = 0; i < p.length; i++) {
+                        $("#employees").append('<tr> <td style="display:none">' + p[i].Id + '</td>  <td>' + p[i].FullName + '</td>  <td>' + p[i].Email + '</td> <td>' + p[i].Password + '</td> <td>' + p[i].Telephone + '</td> <td>' + p[i].Address + '</td> <td>' + p[i].Gender + '</td> <td>' + p[i].CountryName + '</td> <td><input  type="button" value="Edit" onclick="EditData(' + p[i].Id + ')" class="btn btn-success"></td> <td><input type="button" value="Delete" onclick="DeleteData(' + p[i].Id + ')" class="btn btn-danger"></td> </tr>');
+                    }
+                },
+                error: function () {
+                    alert('Record not Show !!!');
+                }
+            });
+        }
+
+        function SaveData() {
+            $.ajax({
+                url: '/Employee/AddEmployee',
+                method: 'POST',
+                data: { Id:KKK,FullName: $("#FullName").val(), Email: $("#Email").val(),Password:$('#Password').val(), Telephone: $("#Telephone").val(), Address: $("#Address").val(), CountryId: $("#CountryId").val(), Gender: $("input[name='Gender']:checked").val(), },
+                success: function (data) {
+                    alert('Data Save/Update Successfully');
+                    BindData();
+                },
+                error: function () { }
+            });
+        }
+
+        function BindCoountry() {
+            $.ajax({
+                url: '/Employee/GetCountry',
+                type: 'GET',
+                data: {},
+                success: function (data) {
+                    $.each(data, function (index, country) {
+                        $('#ddlcountry').append($('<option/>').attr("value", country.CountryId).text(country.CountryName));
+                    });
+                },
+                error: function () { }
+            });
+        }
+
+        var KKK = 0;
+        function EditData(id) {
+            $.ajax({
+                url: '/Employee/Edit',
+                type: 'GET',
+                data: { Id: id },
+                success: function (p) {
+                    console.log(p);
+                    $("#FullName").val(p[0].FullName);
+                    $("#Email").val(p[0].Email);
+                    $("#Password").val(p[0].Password);
+                    $("#Telephone").val(p[0].Telephone)
+                    $("#Address").val(p[0].Address)
+                    $("#CountryId option:selected").val(p[0].CountryId);
+                    $("#CountryId option:selected").text(p[0].CountryName);
+                    $("input[name=Gender][value=" + p[0].Gender + "]").prop('checked', true);
+                    $("#btnsave").val("Update");
+                    KKK = id;
+
+                }
+            });
+        }
+
+        function DeleteData(id) {
+            if (confirm("Are you sure...?")) {
+                $.ajax({
+                    url: '/Employee/Delete',
+                    type: 'GET',
+                    data: { Id: id },
+                    success: function () {
+                        BindData();
+                    },
+                    error: function () {
+                        alert('Record Not Delete Successfully!!');
+                    }
+                });
+            }
+            return false;
+        }
+    </script>
+    }
+
+</body>
+</html>
