@@ -374,10 +374,21 @@
               return false;
           };
 
-          //function removevalidate(event) {
-          //    $("#FullName").next('span').hide();
-          //    $('#Password').next('span').text('').hide();
-          //    $("#Email").next('span').text('Please enter Email').hide();
-          //}
+          function removevalidate(event) {
+              if ($("#FullName").val() != '')
+              {
+                  $("#FullName").next('span').hide();
+              }
+
+              if ($('#Password').val() != '')
+              {
+                  $('#Password').next('span').text('').hide();
+              }
+              
+              if ($("#Email").val() != '')
+              {
+                  $("#Email").next('span').text('').hide();
+              }             
+          }
 </script>
 }
