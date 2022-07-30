@@ -21,13 +21,13 @@ namespace SinglePageApplicationInMVC_UsingJQuery.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        FullName = c.String(),
-                        Password = c.String(),
-                        Email = c.String(),
-                        Telephone = c.String(),
-                        Address = c.String(),
-                        Gender = c.String(),
-                        IsActive = c.Boolean(nullable: false),
+                        FullName = c.String(nullable: false),
+                        Password = c.String(nullable: false),
+                        Email = c.String(nullable: false),
+                        Telephone = c.String(nullable: false, maxLength: 10),
+                        Address = c.String(nullable: false),
+                        Gender = c.String(nullable: false),
+                        IsActive = c.Boolean(nullable: true),
                         CountryId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);

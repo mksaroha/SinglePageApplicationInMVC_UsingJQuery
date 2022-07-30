@@ -15,8 +15,11 @@ namespace SinglePageApplicationInMVC_UsingJQuery.Controllers
         public ActionResult Index()
         {            
             ViewBag.CountryList = _context.Countries.ToList();
-            return View();
+            return View("Index");
+            //I did this to remove "Confirm Form Submission" Message on page load every time
         }
+
+
 
         public JsonResult GetEmployees()
         {
@@ -36,7 +39,7 @@ namespace SinglePageApplicationInMVC_UsingJQuery.Controllers
         [HttpPost]
         public ActionResult AddEmployee(Employee employee)
         {            
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 if (employee.Id == 0)
                 {
@@ -69,7 +72,7 @@ namespace SinglePageApplicationInMVC_UsingJQuery.Controllers
 
         public void Delete(int id)
         {
-            var employee = _context.Employees.Find(id);
+             var employee = _context.Employees.Find(id);
             _context.Employees.Remove(employee);
             _context.SaveChanges();
         }

@@ -1,5 +1,4 @@
 ﻿@model SinglePageApplicationInMVC_UsingJQuery.Models.Employee
-
 @{
     ViewBag.Title = "Index";
 }
@@ -9,7 +8,7 @@
 
 <div class="container">
     <div style="float:left;width:40%">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("AddEmployee","Employee",FormMethod.Post))
         {
             @Html.AntiForgeryToken()
 
@@ -20,15 +19,17 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.FullName, "Please Enter Name", new { @class = "text-danger", style = "display:none" })
+                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", @onkeyup = "removevalidate()" }})
+                        @*@Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })*@
+                        @Html.ValidationMessageFor(model => model.FullName, "Please Enter Name", new { @class = "text-danger", style = "display:none" })                        
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", @onkeyup = "removevalidate()" } })     
+                        @*@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })*@                   
                         @Html.ValidationMessageFor(model => model.Password, "Please Enter Password", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
@@ -36,7 +37,8 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" , @onkeyup = "removevalidate()" } })
+                        @*@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger"})*@
                         @Html.ValidationMessageFor(model => model.Email, "Please Enter Email", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
@@ -44,7 +46,8 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control", @onkeyup = "removevalidate()" } })
+                        @*@Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger"})*@
                         @Html.ValidationMessageFor(model => model.Telephone, "Please Enter Telephone", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
@@ -52,7 +55,8 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" , @onkeyup = "removevalidate()" } })
+                        @*@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger"})*@
                         @Html.ValidationMessageFor(model => model.Address, "Please Enter Address", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
@@ -61,15 +65,16 @@
                     @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <label class="radio-inline">
-                            @Html.RadioButtonFor(model => model.Gender, "Male", new { @name = "gender" })
+                            @Html.RadioButtonFor(model => model.Gender, "Male", new { @name = "gender"})
                             Male
-                        </label>
+                        </label>                                                              
                         <label class="radio-inline">
-                            @Html.RadioButtonFor(model => model.Gender, "Female", new { @name = "gender" })
-                            Female
-                            @Html.ValidationMessageFor(model => model.Gender, "Please Select Gender", new { @class = "text-danger", style = "display:none" })
+                            @Html.RadioButtonFor(model => model.Gender, "Female", new { @name = "gender"})
+                            Female                            
                         </label>
-                    </div>
+                        @*@Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })*@
+                        @Html.ValidationMessageFor(model => model.Gender, "Please Select Gender", new { @class = "text-danger", style = "display:none" })
+                    </div>                    
                 </div>
 
                 <div class="form-group">
@@ -77,6 +82,7 @@
                     <div class="col-md-10">
                         <div class="checkbox">
                             @Html.EditorFor(model => model.IsActive)
+                            @*@Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })*@
                             @Html.ValidationMessageFor(model => model.IsActive, "Please Check IsActive ", new { @class = "text-danger", style = "display:none" })
                         </div>
                     </div>
@@ -87,13 +93,13 @@
                     <div class="col-md-10">
                         @Html.DropDownList("CountryId", new SelectList(ViewBag.CountryList, "CountryId", "CountryName"), "Select Country", htmlAttributes: new { @class = "form-control" })
                         @*<select id="ddlcountry" class="form-control"><option value="0">Select Country</option></select>*@                        
+                        @*@Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })*@
                         @Html.ValidationMessageFor(model => model.CountryId, "Please Select Country", new { @class = "text-danger", style = "display:none" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        @*<button type="submit" id="btnsave" class="btn btn-info" >Save</button>*@
+                    <div class="col-md-offset-2 col-md-10">                        
                         <input type="submit" value="Save" class="btn btn-success" onclick="SaveData(); return false"/>
                         <input type="reset" value="Reset" class="btn btn-primary" />
                     </div>
@@ -141,6 +147,10 @@
           $(document).ready(function () {
               //BindCoountry();
               BindData();
+
+              $("#Telephone").keypress(function (e) {
+                  NumericOnly(e);
+              });        
           });
 
           function BindData() {
@@ -174,7 +184,7 @@
               }
           }
 
-          //$("#btbsave").click(function () {
+          //$("#btnSave").click(function () {
           //    if (ValidateUser() == true) {
           //        $.ajax({
           //            url: '/Employee/AddEmployee',
@@ -188,7 +198,7 @@
           //        });
           //    }
           //})
-          
+
 
           function BindCoountry() {
               $.ajax({
@@ -228,7 +238,7 @@
                       else {
                           $("#IsActive").prop("checked", false);
                       }
-                      
+
                       $("#btnsave").val("Update");
                       KKK = id;
 
@@ -262,40 +272,112 @@
               } else {
                   $("#FullName").next('span').hide();
               }
-              if ($("#Email").val().trim() == '') {
-                  $("#Email").next('span').show();
+
+              if ($('#Email').val().trim() == '') {
+                  $('#Email').next('span').text('Please enter Email').show();
                   return_val = false;
               } else {
-                  $("#Email").next('span').hide();
+                  $('#Email').next('span').hide();
+                  if (fnValidateEmail($('#Email').val().trim()) == false) {
+                      $('#Email').next('span').text('Please enter valid Email').show();
+                      return_val = false;
+                  } else {
+                      $('#Email').next('span').text('Please enter Email').hide();
+                  }
               }
-              if ($("#Password").val().trim() == '') {
-                  $("#Password").next('span').show();
+
+              if ($('#Password').val().trim() == '') {
+                  $('#Password').next('span').show();
                   return_val = false;
               } else {
-                  $("#Password").next('span').hide();
+                  $('#Password').next('span').hide();
+                  if (PasswordStrengthCheck($('#Password').val().trim()) == false) {
+                      return_val = false;
+                  }
               }
+
               if ($("#Telephone").val().trim() == '') {
                   $("#Telephone").next('span').show();
                   return_val = false;
               } else {
                   $("#Telephone").next('span').hide();
               }
+
               if ($("#Address").val().trim() == '') {
                   $("#Address").next('span').show();
                   return_val = false;
               } else {
                   $("#Address").next('span').hide();
               }
-              if ($("#Gender").val().trim() == '') {
-                  $("#Gender").next('span').show();
+                          
+              
+              if ($("#Gender").val().trim() == '') {                  
+                  $('#Gender').next('span').show();
                   return_val = false;
               } else {
                   $("#Gender").next('span').hide();
               }
-              return return_val;
-              //if (!return_val) {
-              //    event.preventDefault();
-              //}
+              return return_val;   
           }
+
+
+          function PasswordStrengthCheck(password) {
+              var return_val = true;
+              if (password != '') {
+                  if (password.length < 8) {
+                      $('#Password').next('span').text('Password should be at least 8 characters long').show();
+                      $('#Password').focus();
+                      return_val = false;
+                  } else if (!password.match(/[A-z]/)) {
+                      $('#Password').next('span').text('At least one letter').show();
+                      $('#Password').focus();
+                      return_val = false;
+                  } else if (!password.match(/[A-Z]/)) {
+                      $('#Password').next('span').text('At least one uppercase alphabet').show();
+                      $('#Password').focus();
+                      return_val = false;
+                  } else if (!password.match(/[a-z]/)) {
+                      $('#Password').next('span').text('At least one lowercase alphabet').show();
+                      $('#Password').focus();
+                      return_val = false;
+                  } else if (!password.match(/\d/)) {
+                      $('#Password').next('span').text('At least one number').show();
+                      $('#Password').focus();
+                      return_val = false;
+                  } else if (!password.match(/[ !@@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)) {
+                      $('#Password').next('span').text('At least one special character').show();
+                      $('#Password').focus();
+                      return_val = false;
+                  } else {
+                      $('#Password').next('span').text('').hide();
+                  }
+              } else {
+                  $('#Password').next('span').text('Please enter Password').show();
+                  return_val = false;
+              }
+              return return_val;
+          };
+
+
+          function fnValidateEmail(email) {
+              var expr = /^(([^<>()[\]\.,;:\s@@\"]+(\.[^<>()[\]\.,;:\s@@\"]+)*)|(\".+\"))@@(([^<>()[\]\.,;:\s@@\"]+\.)+[^<>()[\]\.,;:\s@@\"]{2,})$/i;
+              return expr.test(email);
+          };
+
+          function NumericOnly(e) {
+              var regex = new RegExp("^[0-9]+$");
+              var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+              if (regex.test(str)) {
+                  return true;
+              }
+              e.preventDefault();
+              return false;
+          };
+
+          //function removevalidate(event) {
+          //    $("#FullName").next('span').hide();
+          //    $('#Password').next('span').text('').hide();
+          //    $("#Email").next('span').text('Please enter Email').hide();
+          //}
 </script>
 }

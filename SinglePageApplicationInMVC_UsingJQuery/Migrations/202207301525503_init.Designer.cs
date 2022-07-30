@@ -13,7 +13,7 @@ namespace SinglePageApplicationInMVC_UsingJQuery.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202207281359326_init"; }
+            get { return "202207301525503_init"; }
         }
         
         string IMigrationMetadata.Source
